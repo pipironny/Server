@@ -30,6 +30,20 @@ router.post('/api/group', (req, res)=>{
     });
 });
 
+router.put('/api/group/:id', (req, res)=>{
+    const Upid = req.params.id;
+    const name = req.body.name;
+
+    connection.query('UPDATE `group` SET `name` = ? WHERE id =?',[name, Upid], (err, result) =>{
+        if (err){
+            return console.error("Ошибка подключения " + err.message);
+        }
+        else{
+            res.send(`Group with id ${Upid} has been updated`);
+        }
+    });
+});
+
 router.delete('/api/group/:id', (req, res)=>{
     const delId = req.params.id;
 

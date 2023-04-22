@@ -27,7 +27,7 @@ router.post('/api/attendance', (req, res)=>{
             return console.error("Ошибка подключения " + err.message);
         }
         else{
-            res.send("POSTES");
+            res.send("Успешно добавлено");
         }
     });
 });

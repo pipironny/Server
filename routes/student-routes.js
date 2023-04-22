@@ -48,7 +48,7 @@ router.put('/api/student/:id', (req, res)=>{
             return console.error("Ошибка подключения " + err.message);
         }
         else{
-            res.send(`Subject with id ${Upid} has been updated`);
+            res.send(`Student with id ${Upid} has been updated`);
         }
     });
 });

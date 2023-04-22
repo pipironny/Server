@@ -30,6 +30,20 @@ router.post('/api/role', (req, res)=>{
     });
 });
 
+router.put('/api/role/:id', (req, res)=>{
+    const Upid = req.params.id;
+    const name = req.body.name;
+
+    connection.query('UPDATE `role` SET `name` = ? WHERE id =?',[name, Upid], (err, result) =>{
+        if (err){
+            return console.error("Ошибка подключения " + err.message);
+        }
+        else{
+            res.send(`Role with id ${Upid} has been updated`);
+        }
+    });
+});
+
 router.delete('/api/role/:id', (req, res)=>{
     const delId = req.params.id;
 
