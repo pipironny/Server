@@ -51,6 +51,25 @@ router.post('/api/student', (req, res)=>{
     });
 });
 
+router.put('/api/student/:id', (req, res)=>{
+    const Upid = req.params.id;
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name;
+    const patronymic = req.body.patronymic;
+    const studID_number = req.body.studID_number;
+    //const Group_id = req.body.Group_id;
+    //,`Group_id` = ?
+
+    connection.query('UPDATE `student` SET `first_name` = ?,`last_name` = ?,`patronymic` = ?,`studID_number` = ? WHERE id =?',[first_name, last_name, patronymic, studID_number, Upid], (err, result) =>{
+        if (err){
+            return console.error("Ошибка подключения " + err.message);
+        }
+        else{
+            res.send(`Subject with id ${Upid} has been updated`);
+        }
+    });
+});
+
 router.delete('/api/student/:id', (req, res)=>{
     const delId = req.params.id;
 
