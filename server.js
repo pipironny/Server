@@ -1,6 +1,6 @@
 require("dotenv").config();
 const express = require("express");
-const mysql = require("mysql2");
+//const mysql = require("mysql2");
 const PORT = process.env.PORT ?? 3000;
 const app = express();
 
@@ -24,22 +24,6 @@ app.use(function(err, req, res, next) {
     console.error(err.name);
     console.error(err.code);
     res.status(500).send('Что-то пошло не так');
-});
-
-const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-});
-
-connection.connect(function(err){
-    if (err){
-        return console.error("Ошибка подключения " + err.message);
-    }
-    else{
-        console.log("Соединение с сервером MySQL успешно установлено ");
-    }
 });
 
 app.use(authRoutes);
