@@ -30,6 +30,20 @@ router.post('/api/department', (req, res)=>{
     });
 });
 
+router.put('/api/department/:id', (req, res)=>{
+    const Upid = req.params.id;
+    const name = req.body.name;
+
+    connection.query('UPDATE `department` SET `name` = ? WHERE id =?',[name, Upid], (err, result) =>{
+        if (err){
+            return console.error("Ошибка подключения " + err.message);
+        }
+        else{
+            res.send(`Кафедра с id ${Upid} обновлена`);
+        }
+    });
+});
+
 router.delete('/api/department/:id', (req, res)=>{
     const delId = req.params.id;
 

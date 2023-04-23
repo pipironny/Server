@@ -36,6 +36,26 @@ router.post('/api/employees', (req, res)=>{
     });
 });
 
+router.put('/api/employees/:id', (req, res)=>{
+    const Upid = req.params.id;
+    const first_name = req.body.first_name;
+    const last_name = req.body.last_name;
+    const patronymic = req.body.patronymic;
+    const Department_id = req.body.Department_id;
+    const username = req.body.username;
+    //const hashpassword = req.body.hashpassword;
+    const Role_id = req.body.Role_id;
+
+    connection.query('UPDATE `employees` SET `first_name` = ?,`last_name` = ?,`patronymic` = ?,`Department_id` = ?,`username` = ?,`Role_id` = ? WHERE id =?',[first_name, last_name, patronymic, Department_id, username, Role_id, Upid], (err, result) =>{
+        if (err){
+            return console.error("Ошибка подключения " + err.message);
+        }
+        else{
+            res.send(`Сотрудник с id ${Upid} обновлен`);
+        }
+    });
+});
+
 router.delete('/api/employees/:id', (req, res)=>{
     const delId = req.params.id;
 
