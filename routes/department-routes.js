@@ -25,7 +25,7 @@ router.post('/api/department', (req, res)=>{
             return console.error("Ошибка подключения " + err.message);
         }
         else{
-            res.send("POSTES");
+            res.send("Успешно добавлено");
         }
     });
 });
@@ -38,7 +38,7 @@ router.delete('/api/department/:id', (req, res)=>{
             return console.error("Ошибка подключения" + err.message);
         }
         else{
-            res.send("DELETED");
+            res.send("Удалено");
             //console.log(result);
         }
     });

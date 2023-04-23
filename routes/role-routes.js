@@ -39,7 +39,7 @@ router.put('/api/role/:id', (req, res)=>{
             return console.error("Ошибка подключения " + err.message);
         }
         else{
-            res.send(`Role with id ${Upid} has been updated`);
+            res.send(`Роль с id ${Upid} обновлена`);
         }
     });
 });
@@ -52,7 +52,7 @@ router.delete('/api/role/:id', (req, res)=>{
             return console.error("Ошибка подключения " + err.message);
         }
         else{
-            res.send("DELETED");
+            res.send("Удалено");
             //console.log(result);
         }
     });

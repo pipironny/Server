@@ -28,7 +28,7 @@ router.post('/api/schedule', (req, res)=>{
             return console.error("Ошибка подключения " + err.message);
         }
         else{
-            res.send("POSTES");
+            res.send("Успешно добавлено");
         }
     });
 });
@@ -41,7 +41,7 @@ router.delete('/api/schedule/:id', (req, res)=>{
             return console.error("Ошибка подключения " + err.message);
         }
         else{
-            res.send("DELETED");
+            res.send("Удалено");
             //console.log(result);
         }
     });

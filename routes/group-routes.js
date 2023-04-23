@@ -39,7 +39,7 @@ router.put('/api/group/:id', (req, res)=>{
             return console.error("Ошибка подключения " + err.message);
         }
         else{
-            res.send(`Group with id ${Upid} has been updated`);
+            res.send(`Группа с id ${Upid} обновлена`);
         }
     });
 });
@@ -52,7 +52,7 @@ router.delete('/api/group/:id', (req, res)=>{
             return console.error("Ошибка подключения" + err.message);
         }
         else{
-            res.send("DELETED");
+            res.send("Удалено");
             //console.log(result);
         }
     });

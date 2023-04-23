@@ -40,7 +40,7 @@ router.delete('/api/attendance/:id', (req, res)=>{
             return console.error("Ошибка подключения " + err.message);
         }
         else{
-            res.send("DELETED");
+            res.send("Удалено");
             //console.log(result);
         }
     });

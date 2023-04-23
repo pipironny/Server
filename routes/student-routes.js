@@ -29,7 +29,7 @@ router.post('/api/student', (req, res)=>{
             return console.error("Ошибка подключения " + err.message);
         }
         else{
-            res.send("POSTES");
+            res.send("Успешно добавлено");
         }
     });
 });
@@ -48,7 +48,7 @@ router.put('/api/student/:id', (req, res)=>{
             return console.error("Ошибка подключения " + err.message);
         }
         else{
-            res.send(`Student with id ${Upid} has been updated`);
+            res.send(`Студент с id ${Upid} обновлен`);
         }
     });
 });
@@ -61,7 +61,7 @@ router.delete('/api/student/:id', (req, res)=>{
             return console.error("Ошибка подключения " + err.message);
         }
         else{
-            res.send("DELETED");
+            res.send("Удалено");
             //console.log(result);
         }
     });
