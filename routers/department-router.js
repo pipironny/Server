@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-connection = require('../db/mysqlConnection').connection;
+connection = require('../db/mysql-connection').connection;
 
 router.get("/api/department", (req, res)=>{
     connection.query('SELECT * FROM `department`', (err, result, fields) =>{

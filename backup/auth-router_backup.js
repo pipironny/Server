@@ -1,5 +1,4 @@
 const express = require('express');
-//const userController = require('../controllers/user-controller');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 

@@ -3,7 +3,7 @@ const express = require("express");
 const PORT = process.env.PORT ?? 3000;
 const app = express();
 
-// Routes
+// Routers path
 const groupRoutes = require('./routers/group-router');
 const studentRoutes = require('./routers/student-router');
 const attendanceRoutes = require('./routers/attendance-router');
