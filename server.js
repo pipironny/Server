@@ -4,15 +4,15 @@ const PORT = process.env.PORT ?? 3000;
 const app = express();
 
 // Routes
-const groupRoutes = require('./routes/group-routes');
-const studentRoutes = require('./routes/student-routes');
-const attendanceRoutes = require('./routes/attendance-routes');
-const authRoutes = require('./routes/auth-routes');
-const departmentRoutes = require('./routes/department-routes');
-const employeesRoutes = require('./routes/employees-routes');
-const roleRoutes = require('./routes/role-routes');
-const scheduleRoutes = require('./routes/schedule-routes');
-const subjectRoutes = require('./routes/subject-routes');
+const groupRoutes = require('./routers/group-router');
+const studentRoutes = require('./routers/student-router');
+const attendanceRoutes = require('./routers/attendance-router');
+const authRoutes = require('./routers/auth-router');
+const departmentRoutes = require('./routers/department-router');
+const employeesRoutes = require('./routers/employees-router');
+const roleRoutes = require('./routers/role-router');
+const scheduleRoutes = require('./routers/schedule-router');
+const subjectRoutes = require('./routers/subject-router');
 
 // Middleware, parse the incoming requests with JSON payloads
 app.use(express.json());
@@ -25,6 +25,11 @@ app.use(function(err, req, res, next) {
     res.status(500).send('Что-то пошло не так');
 });
 
+app.get('/', (req, res) =>{
+    res.send("Main page");
+});
+
+// Routers
 app.use(authRoutes);
 app.use(attendanceRoutes);
 app.use(departmentRoutes);
