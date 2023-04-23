@@ -6,7 +6,7 @@ const router = express.Router();
 
 connection = require('../db/mysqlConnection').connection;
 
-// Регистрация нового пользователя
+// Регистрация нового пользователя в таблице employees
 router.post('/api/register', (req, res) => {
     const { username, password } = req.body;
   
@@ -17,7 +17,7 @@ router.post('/api/register', (req, res) => {
       }
       // Добавление пользователя в базу данных
       connection.query(
-        'INSERT INTO users (username, password) VALUES (?, ?)',
+        'INSERT INTO employees (username, password) VALUES (?, ?)',
         [username, hash],
         (err, results) => {
           if (err) {
@@ -38,7 +38,7 @@ router.post('/api/register', (req, res) => {
 router.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     connection.query(
-      'SELECT * FROM users WHERE username = ?',
+      'SELECT * FROM employees WHERE username = ?',
       [username],
       (err, results) => {
         if (err) {
@@ -79,6 +79,16 @@ router.post('/api/login', (req, res) => {
     );
   });
 
-
+  router.get("/api/sessions", (req, res)=>{
+    connection.query('SELECT * FROM `sessions`', (err, result, fields) =>{
+        if (err){
+            return console.error("Ошибка подключения " + err.message);
+        }
+        else{
+           res.send(result);
+           //console.log(result);
+        }
+    });
+});
 
 module.exports = router;
