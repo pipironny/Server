@@ -7,7 +7,9 @@ connection = require('../db/mysql-connection').connection;
 router.get("/api/subject", (req, res)=>{
     connection.query('SELECT * FROM `subject`', (err, result, fields) =>{
         if (err){
-            return console.error("Ошибка подключения " + err.message);
+            console.error("Ошибка подключения " + err.message);
+            res.status(500).send('Internal Server Error');
+            return;
         }
         else{
            res.send(result);
@@ -19,10 +21,13 @@ router.get("/api/subject", (req, res)=>{
 router.post('/api/subject', (req, res)=>{
     const id = req.body.id;
     const name = req.body.name;
+    const description = req.body.description;
 
-    connection.query('INSERT INTO `subject` VALUES(?,?)',[id, name], (err, result) =>{
+    connection.query('INSERT INTO `subject` VALUES(?,?,?)',[id, name, description], (err, result) =>{
         if (err){
-            return console.error("Ошибка подключения " + err.message);
+            console.error("Ошибка подключения " + err.message);
+            res.status(500).send('Internal Server Error');
+            return;
         }
         else{
             res.send("Успешно добавлено");
@@ -33,10 +38,13 @@ router.post('/api/subject', (req, res)=>{
 router.put('/api/subject/:id', (req, res)=>{
     const Upid = req.params.id;
     const name = req.body.name;
+    const description = req.body.description;
 
-    connection.query('UPDATE `subject` SET `name` = ? WHERE id =?',[name, Upid], (err, result) =>{
+    connection.query('UPDATE `subject` SET `name` = ?, `description` = ? WHERE id =?',[name, description, Upid], (err, result) =>{
         if (err){
-            return console.error("Ошибка подключения " + err.message);
+            console.error("Ошибка подключения " + err.message);
+            res.status(500).send('Internal Server Error');
+            return;
         }
         else{
             res.send(`Предмет с id ${Upid} обновлен`);
@@ -49,7 +57,9 @@ router.delete('/api/subject/:id', (req, res)=>{
 
     connection.query('DELETE FROM `subject` WHERE id=?',delId ,(err, result) =>{
         if (err){
-            return console.error("Ошибка подключения " + err.message);
+            console.error("Ошибка подключения " + err.message);
+            res.status(500).send('Internal Server Error');
+            return;
         }
         else{
             res.send("Удалено");
