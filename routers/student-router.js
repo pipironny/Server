@@ -4,6 +4,7 @@ const router = express.Router();
 
 connection = require('../db/mysql-connection').connection;
 
+// Этот запрос API принимает GET-запрос и возвращает всех студентов
 router.get("/api/student", (req, res)=>{
     connection.query('SELECT * FROM `student`', (err, result, fields) =>{
         if (err){
@@ -18,6 +19,7 @@ router.get("/api/student", (req, res)=>{
     });
 });
 
+// Этот запрос API принимает POST-запрос и добавляет студента в базу данных
 router.post('/api/student', (req, res)=>{
     const id = req.body.id;
     const first_name = req.body.first_name;
@@ -39,6 +41,7 @@ router.post('/api/student', (req, res)=>{
     });
 });
 
+// Этот запрос API принимает PUT-запрос и изменяет данные [id] студента в базе данных
 router.put('/api/student/:id', (req, res)=>{
     const Upid = req.params.id;
     const first_name = req.body.first_name;
@@ -61,6 +64,7 @@ router.put('/api/student/:id', (req, res)=>{
     });
 });
 
+// Этот запрос API принимает DELETE-запрос и удаляет данные [id] студента из базы данных
 router.delete('/api/student/:id', (req, res)=>{
     const delId = req.params.id;
 

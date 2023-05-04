@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 connection = require('../db/mysql-connection').connection;
+
 // Этот запрос API принимает GET-запрос и возвращает посещаемость студентов
 router.get("/api/attendance/all", (req, res)=>{
     connection.query('SELECT * FROM `attendance`', (err, result, fields) =>{
@@ -34,7 +35,6 @@ router.get("/api/attendance/test", (req, res)=>{
     });
 });
 */
-
 
 // Этот запрос API принимает POST-запрос и добавляет студента в базу данных
 router.post('/api/attendance', (req, res)=>{
