@@ -19,6 +19,7 @@ router.get("/api/employees", (req, res)=>{
     });
 });
 
+/*
 // Этот запрос API принимает POST-запрос и добавляет сотрудника в базу данных
 router.post('/api/employees', (req, res)=>{
     const id = req.body.id;
@@ -26,11 +27,12 @@ router.post('/api/employees', (req, res)=>{
     const last_name = req.body.last_name;
     const patronymic = req.body.patronymic;
     const Department_id = req.body.Department_id;
-    const login = req.body.login;
+    const username = req.body.username;
     const hashpassword = req.body.hashpassword;
     const Role_id = req.body.Role_id;
 
-    connection.query('INSERT INTO `employees` VALUES(?,?,?,?,?,?,?,?)',[id, first_name, last_name, patronymic, Department_id, login,hashpassword, Role_id], (err, result) =>{
+    connection.query('INSERT INTO `employees` VALUES (?,?,?,?,?,?,?,?)',
+    [id, first_name, last_name, patronymic, Department_id, Role_id, username, hashpassword], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -41,6 +43,7 @@ router.post('/api/employees', (req, res)=>{
         }
     });
 });
+*/
 
 // Этот запрос API принимает PUT-запрос и изменяет данные [id] сотрудника в базе данных
 router.put('/api/employees/:id', (req, res)=>{
@@ -53,7 +56,8 @@ router.put('/api/employees/:id', (req, res)=>{
     //const hashpassword = req.body.hashpassword;
     const Role_id = req.body.Role_id;
 
-    connection.query('UPDATE `employees` SET `first_name` = ?,`last_name` = ?,`patronymic` = ?,`Department_id` = ?,`username` = ?,`Role_id` = ? WHERE id =?',[first_name, last_name, patronymic, Department_id, username, Role_id, Upid], (err, result) =>{
+    connection.query('UPDATE `employees` SET `first_name` = ?,`last_name` = ?,`patronymic` = ?,`Department_id` = ?,`username` = ?,`Role_id` = ? WHERE id =?',
+    [first_name, last_name, patronymic, Department_id, username, Role_id, Upid], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');

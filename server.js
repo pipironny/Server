@@ -28,7 +28,7 @@ app.use(function(err, req, res, next) {
 app.get('/', (req, res) =>{
     res.send("Main page");
 });
-
+ 
 // Routers
 app.use(authRoutes);
 app.use(attendanceRoutes);
@@ -40,6 +40,26 @@ app.use(scheduleRoutes);
 app.use(studentRoutes);
 app.use(subjectRoutes);
 
+const interval = 1000 * 60 * 60; // 1 hour
+
+setInterval(deleteExpiredSessions, interval);
+
+// Удаление истёкших сессий
+function deleteExpiredSessions() {
+    const now = new Date();
+    connection.query(
+      'DELETE FROM sessions WHERE expires_at < ?',
+      [now],
+      (err, results) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(`Deleted ${results.affectedRows} expired sessions`);
+        }
+      }
+    );
+  }
+ 
 app.listen(PORT, () => {
     console.log(`Server running on localhost port ${PORT}...`);
 });
