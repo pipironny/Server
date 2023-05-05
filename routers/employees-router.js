@@ -19,32 +19,6 @@ router.get("/api/employees", (req, res)=>{
     });
 });
 
-/*
-// Этот запрос API принимает POST-запрос и добавляет сотрудника в базу данных
-router.post('/api/employees', (req, res)=>{
-    const id = req.body.id;
-    const first_name = req.body.first_name;
-    const last_name = req.body.last_name;
-    const patronymic = req.body.patronymic;
-    const Department_id = req.body.Department_id;
-    const username = req.body.username;
-    const hashpassword = req.body.hashpassword;
-    const Role_id = req.body.Role_id;
-
-    connection.query('INSERT INTO `employees` VALUES (?,?,?,?,?,?,?,?)',
-    [id, first_name, last_name, patronymic, Department_id, Role_id, username, hashpassword], (err, result) =>{
-        if (err){
-            console.error("Ошибка подключения " + err.message);
-            res.status(500).send('Internal Server Error');
-            return;
-        }
-        else{
-            res.send("Успешно добавлено");
-        }
-    });
-});
-*/
-
 // Этот запрос API принимает PUT-запрос и изменяет данные [id] сотрудника в базе данных
 router.put('/api/employees/:id', (req, res)=>{
     const Upid = req.params.id;
