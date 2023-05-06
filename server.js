@@ -3,9 +3,6 @@ const express = require("express");
 const PORT = process.env.PORT ?? 3000;
 const app = express();
 
-// Middleware
-//const requireAuth = require('./middleware/auth-middleware');
-
 // Routers path
 const groupRoutes = require('./routers/group-router');
 const studentRoutes = require('./routers/student-router');

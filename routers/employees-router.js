@@ -1,5 +1,9 @@
 const express = require('express');
 
+// Промежуточное ПО (Middleware)
+const requireAuth = require('../middleware/user_auth-middleware');
+const requireAuthAndRole = require('../middleware/admin_auth-middleware');
+
 const router = express.Router();
 
 connection = require('../db/mysql-connection').connection;
@@ -21,7 +25,7 @@ router.get("/api/employees", (req, res)=>{
 });
 
 // Этот запрос API принимает PUT-запрос и изменяет данные [id] сотрудника в базе данных
-router.put('/api/employees/:id', (req, res)=>{
+router.put('/api/employees/:id', requireAuthAndRole, (req, res)=>{
     const Upid = req.params.id;
     const first_name = req.body.first_name;
     const last_name = req.body.last_name;
@@ -46,7 +50,7 @@ router.put('/api/employees/:id', (req, res)=>{
 });
 
 // Этот запрос API принимает DELETE-запрос и удаляет данные [id] сотрудника из базы данных
-router.delete('/api/employees/:id', (req, res)=>{
+router.delete('/api/employees/:id', requireAuthAndRole, (req, res)=>{
     const delId = req.params.id;
 
     connection.query('DELETE FROM `employees` WHERE id=?',delId ,

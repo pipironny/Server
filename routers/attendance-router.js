@@ -1,14 +1,14 @@
 const express = require('express');
 
 // Middleware
-//const requireAuth = require('./middleware/auth-middleware');
+const requireAuth = require('../middleware/user_auth-middleware');
 
 const router = express.Router();
 
 connection = require('../db/mysql-connection').connection;
 
 // Этот запрос API принимает GET-запрос и возвращает посещаемость студентов
-router.get("/api/attendance/all", (req, res)=>{
+router.get("/api/attendance/all", requireAuth, (req, res)=>{
     connection.query('SELECT * FROM `attendance`', 
     (err, result, fields) =>{
         if (err){

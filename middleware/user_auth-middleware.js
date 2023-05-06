@@ -1,7 +1,8 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
-function requireAuth(req, res, next) {
+// Промежуточное ПО для проверки аутентификации пользователя User
+requireAuth = function requireAuth(req, res, next) {
     const authHeader = req.headers.authorization;
   
     if (!authHeader) {
@@ -15,7 +16,7 @@ function requireAuth(req, res, next) {
     }
   
     try {
-      const decodedToken = jwt.verify(authToken, process.env.JWT_SECRET);
+      const decodedToken = jwt.verify(authToken, process.env.SECRET_KEY);
       req.user = decodedToken;
       next();
     } catch (err) {
