@@ -1,5 +1,4 @@
 const express = require('express');
-//const userController = require('../controllers/user-controller');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -62,7 +61,7 @@ router.post('/api/login', (req, res) => {
           const result = bcrypt.compareSync(password, user.hashpassword);
           if (result == true) {
             const token = jwt.sign({ username }, process.env.SECRET_KEY, {
-              expiresIn: '24h'
+              expiresIn: '1h'
             });
 
             // сохраняем токен в таблице sessions
@@ -88,6 +87,7 @@ router.post('/api/login', (req, res) => {
   );
 });
 
+// Этот запрос API принимает GET-запрос и возвращает сессии
   router.get("/api/sessions", (req, res)=>{
     connection.query('SELECT * FROM `sessions`', (err, result, fields) =>{
         if (err){
