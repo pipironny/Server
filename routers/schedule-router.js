@@ -6,7 +6,8 @@ connection = require('../db/mysql-connection').connection;
 
 // Этот запрос API принимает GET-запрос и возвращает все записи таблицы расписание
 router.get("/api/schedule", (req, res)=>{
-    connection.query('SELECT * FROM `schedule`', (err, result, fields) =>{
+    connection.query('SELECT * FROM `schedule`', 
+    (err, result, fields) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -28,7 +29,8 @@ router.post('/api/schedule', (req, res)=>{
     const date = req.body.date;
 
     connection.query('INSERT INTO `schedule` VALUES(?,?,?,?,?)',
-    [id, Group_id, Employees_id, Subject_id, date], (err, result) =>{
+    [id, Group_id, Employees_id, Subject_id, date], 
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -49,7 +51,8 @@ router.put('/api/schedule/:id', (req, res)=>{
     //const date = req.body.date;
 
     connection.query('UPDATE `schedule` SET `Group_id` = ?, `Employees_id` = ?, `Subject_id` = ? WHERE id =?',
-    [Group_id, Employees_id, Subject_id, Upid], (err, result) =>{
+    [Group_id, Employees_id, Subject_id, Upid], 
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -65,7 +68,8 @@ router.put('/api/schedule/:id', (req, res)=>{
 router.delete('/api/schedule/:id', (req, res)=>{
     const delId = req.params.id;
 
-    connection.query('DELETE FROM `schedule` WHERE id=?',delId ,(err, result) =>{
+    connection.query('DELETE FROM `schedule` WHERE id=?',delId ,
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');

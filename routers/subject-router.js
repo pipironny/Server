@@ -6,7 +6,8 @@ connection = require('../db/mysql-connection').connection;
 
 // Этот запрос API принимает GET-запрос и возвращает все дисциплины
 router.get("/api/subject", (req, res)=>{
-    connection.query('SELECT * FROM `subject`', (err, result, fields) =>{
+    connection.query('SELECT * FROM `subject`',
+    (err, result, fields) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -26,7 +27,8 @@ router.post('/api/subject', (req, res)=>{
     const description = req.body.description;
 
     connection.query('INSERT INTO `subject` VALUES(?,?,?)',
-    [id, name, description], (err, result) =>{
+    [id, name, description], 
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -45,7 +47,8 @@ router.put('/api/subject/:id', (req, res)=>{
     const description = req.body.description;
 
     connection.query('UPDATE `subject` SET `name` = ?, `description` = ? WHERE id =?',
-    [name, description, Upid], (err, result) =>{
+    [name, description, Upid], 
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -61,7 +64,8 @@ router.put('/api/subject/:id', (req, res)=>{
 router.delete('/api/subject/:id', (req, res)=>{
     const delId = req.params.id;
 
-    connection.query('DELETE FROM `subject` WHERE id=?',delId ,(err, result) =>{
+    connection.query('DELETE FROM `subject` WHERE id=?',delId ,
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');

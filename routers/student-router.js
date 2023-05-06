@@ -6,7 +6,8 @@ connection = require('../db/mysql-connection').connection;
 
 // Этот запрос API принимает GET-запрос и возвращает всех студентов
 router.get("/api/student", (req, res)=>{
-    connection.query('SELECT * FROM `student`', (err, result, fields) =>{
+    connection.query('SELECT * FROM `student`', 
+    (err, result, fields) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -30,7 +31,8 @@ router.post('/api/student', (req, res)=>{
     const course_id = req.body.course_id;
 
     connection.query('INSERT INTO `student` VALUES(?,?,?,?,?,?,?)',
-    [id, first_name, last_name, patronymic, studID_number, Group_id, course_id], (err, result) =>{
+    [id, first_name, last_name, patronymic, studID_number, Group_id, course_id], 
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -54,7 +56,8 @@ router.put('/api/student/:id', (req, res)=>{
     //,`Group_id` = ?
 
     connection.query('UPDATE `student` SET `first_name` = ?,`last_name` = ?,`patronymic` = ?,`studID_number` = ?,`course_id` = ? WHERE id =?',
-    [first_name, last_name, patronymic, studID_number, course_id, Upid], (err, result) =>{
+    [first_name, last_name, patronymic, studID_number, course_id, Upid], 
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -70,7 +73,8 @@ router.put('/api/student/:id', (req, res)=>{
 router.delete('/api/student/:id', (req, res)=>{
     const delId = req.params.id;
 
-    connection.query('DELETE FROM `student` WHERE id=?',delId ,(err, result) =>{
+    connection.query('DELETE FROM `student` WHERE id=?',delId ,
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');

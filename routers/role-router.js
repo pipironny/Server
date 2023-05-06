@@ -6,7 +6,8 @@ connection = require('../db/mysql-connection').connection;
 
 // Этот запрос API принимает GET-запрос и возвращает все роли
 router.get("/api/role", (req, res)=>{
-    connection.query('SELECT * FROM `role`', (err, result, fields) =>{
+    connection.query('SELECT * FROM `role`', 
+    (err, result, fields) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -25,7 +26,8 @@ router.post('/api/role', (req, res)=>{
     const name = req.body.name;
 
     connection.query('INSERT INTO `role` VALUES(?,?)',
-    [id, name], (err, result) =>{
+    [id, name], 
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -43,7 +45,8 @@ router.put('/api/role/:id', (req, res)=>{
     const name = req.body.name;
 
     connection.query('UPDATE `role` SET `name` = ? WHERE id =?',
-    [name, Upid], (err, result) =>{
+    [name, Upid], 
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -59,7 +62,8 @@ router.put('/api/role/:id', (req, res)=>{
 router.delete('/api/role/:id', (req, res)=>{
     const delId = req.params.id;
 
-    connection.query('DELETE FROM `role` WHERE id=?',delId ,(err, result) =>{
+    connection.query('DELETE FROM `role` WHERE id=?',delId ,
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');

@@ -6,7 +6,8 @@ connection = require('../db/mysql-connection').connection;
 
 // Этот запрос API принимает GET-запрос и возвращает все кафедры
 router.get("/api/department", (req, res)=>{
-    connection.query('SELECT * FROM `department`', (err, result, fields) =>{
+    connection.query('SELECT * FROM `department`', 
+    (err, result, fields) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');

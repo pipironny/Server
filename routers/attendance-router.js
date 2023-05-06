@@ -6,7 +6,8 @@ connection = require('../db/mysql-connection').connection;
 
 // Этот запрос API принимает GET-запрос и возвращает посещаемость студентов
 router.get("/api/attendance/all", (req, res)=>{
-    connection.query('SELECT * FROM `attendance`', (err, result, fields) =>{
+    connection.query('SELECT * FROM `attendance`', 
+    (err, result, fields) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -44,7 +45,8 @@ router.post('/api/attendance', (req, res)=>{
     const visit = req.body.visit;
 
     connection.query('INSERT INTO `attendance` VALUES(?,?,?,?)',
-    [id, Student_id, Schedule_id, visit], (err, result) =>{
+    [id, Student_id, Schedule_id, visit], 
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -64,7 +66,8 @@ router.put('/api/attendance/:id', (req, res)=>{
     const visit = req.body.visit;
 
     connection.query('UPDATE `attendance` SET `Student_id` = ?,`Schedule_id` = ?,`visit` = ? WHERE id =?',
-    [Student_id, Schedule_id, visit, Upid], (err, result) =>{
+    [Student_id, Schedule_id, visit, Upid], 
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -80,7 +83,8 @@ router.put('/api/attendance/:id', (req, res)=>{
 router.delete('/api/attendance/:id', (req, res)=>{
     const delId = req.params.id;
 
-    connection.query('DELETE FROM `attendance` WHERE id=?',delId ,(err, result) =>{
+    connection.query('DELETE FROM `attendance` WHERE id=?',delId ,
+    (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
