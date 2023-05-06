@@ -1,5 +1,8 @@
 const express = require('express');
 
+// Middleware
+//const requireAuth = require('./middleware/auth-middleware');
+
 const router = express.Router();
 
 connection = require('../db/mysql-connection').connection;

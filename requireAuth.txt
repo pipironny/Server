@@ -40,3 +40,23 @@ router.get("/api/attendance/all", requireAuth, (req, res)=>{
         }
     });
 });
+
+// serverbd.js (основной файл приложения)
+const express = require('express');
+const app = express();
+const requireAuth = require('./authMiddleware');
+
+// Маршруты
+
+// Защищенный маршрут требующий аутентификации
+app.get('/api/protected', requireAuth, (req, res) => {
+  // ...
+});
+
+// Остальные маршруты...
+// ...
+
+// Запуск сервера
+app.listen(3000, () => {
+  console.log('Сервер запущен на порту 3000');
+});
