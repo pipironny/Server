@@ -32,12 +32,8 @@ router.post('/api/register', (req, res) => {
             res.status(500).send('Internal Server Error');
             return;
           }
-  
-          // Создание токена доступа JWT
-          const token = jwt.sign({ username }, process.env.SECRET_KEY);
-  
-          // Возвращение токена и статуса успешного выполнения
-          res.status(200).json({ token });
+          // Возвращение статуса успешного выполнения
+          res.status(200).send('Регистрация успешно завершена');
         }
       );
     });
@@ -60,7 +56,7 @@ router.post('/api/login', (req, res) => {
           // Проверка пароля
           const result = bcrypt.compareSync(password, user.hashpassword);
           if (result == true) {
-            const token = jwt.sign({ username }, process.env.SECRET_KEY, {
+            const token = jwt.sign({ userId: user.id, Role: user.Role_id }, process.env.SECRET_KEY, {
               expiresIn: '1h'
             });
 
