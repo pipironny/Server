@@ -25,7 +25,8 @@ router.post('/api/subject', (req, res)=>{
     const name = req.body.name;
     const description = req.body.description;
 
-    connection.query('INSERT INTO `subject` VALUES(?,?,?)',[id, name, description], (err, result) =>{
+    connection.query('INSERT INTO `subject` VALUES(?,?,?)',
+    [id, name, description], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -43,7 +44,8 @@ router.put('/api/subject/:id', (req, res)=>{
     const name = req.body.name;
     const description = req.body.description;
 
-    connection.query('UPDATE `subject` SET `name` = ?, `description` = ? WHERE id =?',[name, description, Upid], (err, result) =>{
+    connection.query('UPDATE `subject` SET `name` = ?, `description` = ? WHERE id =?',
+    [name, description, Upid], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');

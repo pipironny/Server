@@ -25,8 +25,7 @@ router.post('/api/register', (req, res) => {
         return;
       }
       // Добавление пользователя в базу данных
-      connection.query(
-        'INSERT INTO `employees` VALUES (?,?,?,?,?,?,?,?)',
+      connection.query('INSERT INTO `employees` VALUES (?,?,?,?,?,?,?,?)',
         [id, first_name, last_name, patronymic, Department_id, Role_id, username, hash],
         (err, results) => {
           if (err) {
@@ -48,8 +47,7 @@ router.post('/api/register', (req, res) => {
 // обработчик POST-запроса на эндпоинт /login
 router.post('/api/login', (req, res) => {
   const { username, password } = req.body;
-  connection.query(
-    'SELECT * FROM employees WHERE username = ?',
+  connection.query('SELECT * FROM employees WHERE username = ?',
     [username],
     (err, results) => {
       if (err) {
@@ -70,8 +68,7 @@ router.post('/api/login', (req, res) => {
             // сохраняем токен в таблице sessions
             const expiresAt = new Date();
             expiresAt.setHours(expiresAt.getHours() + 1);
-            connection.query(
-              'INSERT INTO sessions (token, user_id, expires_at) VALUES (?, ?, ?)',
+            connection.query('INSERT INTO sessions (token, user_id, expires_at) VALUES (?, ?, ?)',
               [token, user.id, expiresAt],
               (err, results) => {
                 if (err) {

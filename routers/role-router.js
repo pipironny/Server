@@ -24,7 +24,8 @@ router.post('/api/role', (req, res)=>{
     const id = req.body.id;
     const name = req.body.name;
 
-    connection.query('INSERT INTO `role` VALUES(?,?)',[id, name], (err, result) =>{
+    connection.query('INSERT INTO `role` VALUES(?,?)',
+    [id, name], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -41,7 +42,8 @@ router.put('/api/role/:id', (req, res)=>{
     const Upid = req.params.id;
     const name = req.body.name;
 
-    connection.query('UPDATE `role` SET `name` = ? WHERE id =?',[name, Upid], (err, result) =>{
+    connection.query('UPDATE `role` SET `name` = ? WHERE id =?',
+    [name, Upid], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');

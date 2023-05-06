@@ -27,7 +27,8 @@ router.post('/api/schedule', (req, res)=>{
     const Subject_id = req.body.Subject_id;
     const date = req.body.date;
 
-    connection.query('INSERT INTO `schedule` VALUES(?,?,?,?,?)',[id, Group_id, Employees_id, Subject_id, date], (err, result) =>{
+    connection.query('INSERT INTO `schedule` VALUES(?,?,?,?,?)',
+    [id, Group_id, Employees_id, Subject_id, date], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -47,7 +48,8 @@ router.put('/api/schedule/:id', (req, res)=>{
     const Subject_id = req.body.Subject_id;
     //const date = req.body.date;
 
-    connection.query('UPDATE `schedule` SET `Group_id` = ?, `Employees_id` = ?, `Subject_id` = ? WHERE id =?',[Group_id, Employees_id, Subject_id, Upid], (err, result) =>{
+    connection.query('UPDATE `schedule` SET `Group_id` = ?, `Employees_id` = ?, `Subject_id` = ? WHERE id =?',
+    [Group_id, Employees_id, Subject_id, Upid], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');

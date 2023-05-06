@@ -29,7 +29,8 @@ router.post('/api/student', (req, res)=>{
     const Group_id = req.body.Group_id;
     const course_id = req.body.course_id;
 
-    connection.query('INSERT INTO `student` VALUES(?,?,?,?,?,?,?)',[id, first_name, last_name, patronymic, studID_number, Group_id, course_id], (err, result) =>{
+    connection.query('INSERT INTO `student` VALUES(?,?,?,?,?,?,?)',
+    [id, first_name, last_name, patronymic, studID_number, Group_id, course_id], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -52,7 +53,8 @@ router.put('/api/student/:id', (req, res)=>{
     //const Group_id = req.body.Group_id;
     //,`Group_id` = ?
 
-    connection.query('UPDATE `student` SET `first_name` = ?,`last_name` = ?,`patronymic` = ?,`studID_number` = ?,`course_id` = ? WHERE id =?',[first_name, last_name, patronymic, studID_number, course_id, Upid], (err, result) =>{
+    connection.query('UPDATE `student` SET `first_name` = ?,`last_name` = ?,`patronymic` = ?,`studID_number` = ?,`course_id` = ? WHERE id =?',
+    [first_name, last_name, patronymic, studID_number, course_id, Upid], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');

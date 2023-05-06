@@ -43,7 +43,8 @@ router.post('/api/attendance', (req, res)=>{
     const Schedule_id = req.body.Schedule_id;
     const visit = req.body.visit;
 
-    connection.query('INSERT INTO `attendance` VALUES(?,?,?,?)',[id, Student_id, Schedule_id, visit], (err, result) =>{
+    connection.query('INSERT INTO `attendance` VALUES(?,?,?,?)',
+    [id, Student_id, Schedule_id, visit], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
@@ -62,7 +63,8 @@ router.put('/api/attendance/:id', (req, res)=>{
     const Schedule_id = req.body.Schedule_id;
     const visit = req.body.visit;
 
-    connection.query('UPDATE `attendance` SET `Student_id` = ?,`Schedule_id` = ?,`visit` = ? WHERE id =?',[Student_id, Schedule_id, visit, Upid], (err, result) =>{
+    connection.query('UPDATE `attendance` SET `Student_id` = ?,`Schedule_id` = ?,`visit` = ? WHERE id =?',
+    [Student_id, Schedule_id, visit, Upid], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
