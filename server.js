@@ -4,15 +4,15 @@ const PORT = process.env.PORT ?? 3000;
 const app = express();
 
 // Routers path
-const groupRoutes = require('./routers/group-router');
-const studentRoutes = require('./routers/student-router');
-const attendanceRoutes = require('./routers/attendance-router');
-const authRoutes = require('./routers/auth-router');
-const departmentRoutes = require('./routers/department-router');
-const employeesRoutes = require('./routers/employees-router');
-const roleRoutes = require('./routers/role-router');
-const scheduleRoutes = require('./routers/schedule-router');
-const subjectRoutes = require('./routers/subject-router');
+const groupRoutes = require('./routes/group-router');
+const studentRoutes = require('./routes/student-router');
+const attendanceRoutes = require('./routes/attendance-router');
+const authRoutes = require('./routes/auth-router');
+const departmentRoutes = require('./routes/department-router');
+const employeesRoutes = require('./routes/employees-router');
+const roleRoutes = require('./routes/role-router');
+const scheduleRoutes = require('./routes/schedule-router');
+const subjectRoutes = require('./routes/subject-router');
 
 // Middleware, parse the incoming requests with JSON payloads
 app.use(express.json());
