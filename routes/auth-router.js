@@ -6,6 +6,7 @@ const router = express.Router();
 
 connection = require('../db/mysql-connection').connection;
 
+// API-1
 // Регистрация нового пользователя в таблице employees
 router.post('/api/register', (req, res) => {
   const id = req.body.id;
