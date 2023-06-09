@@ -5,8 +5,8 @@ const router = express.Router();
 connection = require('../db/mysql-connection').connection;
 
 // Этот запрос API принимает GET-запрос и возвращает все группы
-router.get("/api/group", (req, res)=>{
-    connection.query('SELECT * FROM `group`', 
+router.get("/api/groups", (req, res)=>{
+    connection.query('SELECT * FROM `groups`', 
     (err, result, fields) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
@@ -25,7 +25,7 @@ router.post('/api/group', (req, res)=>{
     const id = req.body.id;
     const name = req.body.name;
 
-    connection.query('INSERT INTO `group` VALUES(?,?)',
+    connection.query('INSERT INTO `groups` VALUES(?,?)',
     [id, name], 
     (err, result) =>{
         if (err){
@@ -44,7 +44,7 @@ router.put('/api/group/:id', (req, res)=>{
     const Upid = req.params.id;
     const name = req.body.name;
 
-    connection.query('UPDATE `group` SET `name` = ? WHERE id =?',
+    connection.query('UPDATE `groups` SET `name` = ? WHERE id =?',
     [name, Upid], 
     (err, result) =>{
         if (err){
@@ -62,7 +62,7 @@ router.put('/api/group/:id', (req, res)=>{
 router.delete('/api/group/:id', (req, res)=>{
     const delId = req.params.id;
 
-    connection.query('DELETE FROM `group` WHERE id=?',delId ,
+    connection.query('DELETE FROM `groups` WHERE id=?',delId ,
     (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);

@@ -5,8 +5,8 @@ const router = express.Router();
 connection = require('../db/mysql-connection').connection;
 
 // Этот запрос API принимает GET-запрос и возвращает все кафедры
-router.get("/api/department", (req, res)=>{
-    connection.query('SELECT * FROM `department`', 
+router.get("/api/departments", (req, res)=>{
+    connection.query('SELECT * FROM `departments`', 
     (err, result, fields) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
@@ -25,7 +25,7 @@ router.post('/api/department', (req, res)=>{
     const id = req.body.id;
     const name = req.body.name;
 
-    connection.query('INSERT INTO `department` VALUES(?,?)',
+    connection.query('INSERT INTO `departments` VALUES(?,?)',
     [id, name], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
@@ -43,7 +43,7 @@ router.put('/api/department/:id', (req, res)=>{
     const Upid = req.params.id;
     const name = req.body.name;
 
-    connection.query('UPDATE `department` SET `name` = ? WHERE id =?',
+    connection.query('UPDATE `departments` SET `name` = ? WHERE id =?',
     [name, Upid], (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
@@ -60,7 +60,7 @@ router.put('/api/department/:id', (req, res)=>{
 router.delete('/api/department/:id', (req, res)=>{
     const delId = req.params.id;
 
-    connection.query('DELETE FROM `department` WHERE id=?',delId ,(err, result) =>{
+    connection.query('DELETE FROM `departments` WHERE id=?',delId ,(err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
             res.status(500).send('Internal Server Error');
