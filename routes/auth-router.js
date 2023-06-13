@@ -13,8 +13,8 @@ router.post('/api/register', (req, res) => {
   const first_name = req.body.first_name;
   const last_name = req.body.last_name;
   const patronymic = req.body.patronymic;
-  const Department_id = req.body.Department_id;
-  const Role_id = req.body.Role_id;
+  const department_id = req.body.department_id;
+  const role_id = req.body.role_id;
   const { username, password } = req.body;
   
     // Хеширование пароля
@@ -26,7 +26,7 @@ router.post('/api/register', (req, res) => {
       }
       // Добавление пользователя в базу данных
       connection.query('INSERT INTO `employees` VALUES (?,?,?,?,?,?,?,?)',
-        [id, first_name, last_name, patronymic, Department_id, Role_id, username, hash],
+        [id, first_name, last_name, patronymic, department_id, role_id, username, hash],
         (err, results) => {
           if (err) {
             console.error("Ошибка подключения " + err.message);
@@ -57,7 +57,7 @@ router.post('/api/login', (req, res) => {
           // Проверка пароля
           const result = bcrypt.compareSync(password, user.hashpassword);
           if (result == true) {
-            const token = jwt.sign({ userId: user.id, Role: user.Role_id }, process.env.SECRET_KEY, {
+            const token = jwt.sign({ userId: user.id, Role: user.role_id }, process.env.SECRET_KEY, {
               expiresIn: '1h'
             });
 
