@@ -4,15 +4,18 @@ const PORT = process.env.PORT ?? 3000;
 const app = express();
 
 // Routers path
+
+const authRoutes = require('./routes/auth-router');
+/*
 const groupRoutes = require('./routes/group-router');
 const studentRoutes = require('./routes/student-router');
 const attendanceRoutes = require('./routes/attendance-router');
-const authRoutes = require('./routes/auth-router');
 const departmentRoutes = require('./routes/department-router');
 const employeesRoutes = require('./routes/employees-router');
 const roleRoutes = require('./routes/role-router');
 const scheduleRoutes = require('./routes/schedule-router');
 const subjectRoutes = require('./routes/subject-router');
+*/
 
 // Middleware, parse the incoming requests with JSON payloads
 app.use(express.json());
@@ -31,6 +34,8 @@ app.get('/', (req, res) =>{
  
 // Маршруты
 app.use(authRoutes);
+
+/*
 app.use(attendanceRoutes);
 app.use(departmentRoutes);
 app.use(employeesRoutes);
@@ -39,6 +44,7 @@ app.use(roleRoutes);
 app.use(scheduleRoutes);
 app.use(studentRoutes);
 app.use(subjectRoutes);
+*/
 
 const interval = 1000 * 60 * 60; // 1 hour
 
