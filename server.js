@@ -6,6 +6,8 @@ const app = express();
 // Routers path
 
 const authRoutes = require('./routes/auth-router');
+const visitRoutes = require('./routes/4_visit_page-router');
+const attendanceRoutes = require('./routes/3_attendance_page-router');
 /*
 const groupRoutes = require('./routes/group-router');
 const studentRoutes = require('./routes/student-router');
@@ -34,7 +36,8 @@ app.get('/', (req, res) =>{
  
 // Маршруты
 app.use(authRoutes);
-
+app.use(visitRoutes);
+app.use(attendanceRoutes);
 /*
 app.use(attendanceRoutes);
 app.use(departmentRoutes);
