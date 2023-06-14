@@ -2,10 +2,13 @@ const express = require('express');
 
 const router = express.Router();
 
+// Промежуточное ПО (Middleware)
+const requireAuth = require('../middleware/user_auth-middleware');
+
 connection = require('../db/mysql-connection').connection;
 
 // 2 Страница группы, по id группы:
-router.get('/api/group_page/:id', requireAuthAndRole, (req, res)=>{
+router.get('/api/group_page/:id', requireAuth, (req, res)=>{
     const id = req.params.id;
 
     const body = {
@@ -72,8 +75,19 @@ router.get('/api/group_page/:id', requireAuthAndRole, (req, res)=>{
          }
          else{
              body.subjects = result;
+             if (
+                body.schedule &&
+                body.attendance &&
+                body.students &&
+                body.subjects
+             ) {
+                res.json(body);
+             }
          }
      });
+
+
+     
 
 });
 

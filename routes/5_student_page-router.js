@@ -2,10 +2,12 @@ const express = require('express');
 
 const router = express.Router();
 
+const requireAuth = require('../middleware/user_auth-middleware');
+
 connection = require('../db/mysql-connection').connection;
 
 // Страница студента, по id студента:
-router.get('/api/student_page/:id/', requireAuthAndRole, (req, res)=>{
+router.get('/api/student_page/:id', requireAuth, (req, res)=>{
     const id = req.params.id; 
     
     const body = {
@@ -40,6 +42,12 @@ router.get('/api/student_page/:id/', requireAuthAndRole, (req, res)=>{
         }
         else{
             body.subjects = result;
+            if (
+                body.attendance &&
+                body.subjects
+             ) {
+                res.json(body);
+             }
         }
     });
 

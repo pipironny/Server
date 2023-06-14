@@ -36,7 +36,7 @@ requireAuthAndRole = function requireAuthAndRole(req, res, next) {
 
   req.user = decodedToken;
 
-  console.log (decodedToken);
+  //console.log (decodedToken);
 
   // Проверка роли пользователя в токене
   if (decodedToken.Role !== 2) {
