@@ -17,6 +17,7 @@ router.post('/api/check_token', (req, res) => {
           res.status(401).json({ valid: false });
         } else {
           // Токен проверен успешно
+          // console.log (decodedToken);
           res.status(200).json({ valid: true });
         }
       });

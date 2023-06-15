@@ -3,6 +3,14 @@ const express = require("express");
 const PORT = process.env.PORT ?? 3000;
 const app = express();
 
+// Middleware для настройки CORS
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', `http://localhost:5000`); // Здесь указывается домен веб-страницы
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
 // Routers path
 const authRoutes = require('./routes/auth-router');
 const groupRoutes = require('./routes/2_group_page-router');
@@ -18,18 +26,8 @@ const all_studentsRoutes = require('./routes/8.4_all_sudents_page-router');
 const searchRoutes = require('./routes/9_search-router');
 const tokenRoutes = require('./routes/check_token');
 
-
 // Middleware, parse the incoming requests with JSON payloads
 app.use(express.json());
-
-// Middleware для настройки CORS
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', `http://localhost:${PORT}`); // Здесь указывается домен веб-страницы
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  next();
-});
-
 
 // Global Error Handler
 app.use(function(err, req, res, next) {

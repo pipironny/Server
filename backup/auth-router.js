@@ -57,7 +57,7 @@ router.post('/api/login', (req, res) => {
           // Проверка пароля
           const result = bcrypt.compareSync(password, user.hashpassword);
           if (result == true) {
-            const token = jwt.sign({ userId: user.id, name: user.first_name, Role: user.role_id }, process.env.SECRET_KEY, {
+            const token = jwt.sign({ userId: user.id, Role: user.role_id }, process.env.SECRET_KEY, {
               expiresIn: '1h'
             });
 
@@ -71,7 +71,7 @@ router.post('/api/login', (req, res) => {
                   console.log(err);
                   res.sendStatus(500);
                 } else {
-                  res.send({ token, role: user.role_id, name: user.first_name });
+                  res.send({ token });
                 }
               }
             );
