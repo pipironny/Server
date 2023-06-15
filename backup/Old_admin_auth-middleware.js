@@ -36,23 +36,14 @@ requireAuthAndRole = function requireAuthAndRole(req, res, next) {
 
   req.user = decodedToken;
 
-  // Проверка роли пользователя в базе данных (Role_id = 2 для администратора)
-  connection.query(
-    'SELECT Role_id FROM employees WHERE username = ?',
-    [decodedToken.userId],
-    (err, result) => {
-      if (err) {
-        console.error('Ошибка запроса к базе данных:', err);
-        return res.status(500).json({ message: 'Internal Server Error' });
-      }
+  //console.log (decodedToken);
 
-      if (result.length === 0 || result[0].Role_id !== 2) {
-        return res.status(403).json({ message: 'Forbidden' });
-      }
+  // Проверка роли пользователя в токене
+  if (decodedToken.Role !== 2) {
+    return res.status(403).json({ message: 'Forbidden' });
+  }
 
-      next();
-    }
-  );
+  next();
 }
 
 module.exports = requireAuthAndRole;
