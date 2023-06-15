@@ -16,6 +16,7 @@ const all_groupsRoutes = require('./routes/8.2_all_groups_page-router');
 const all_subjectsRoutes = require('./routes/8.3_all_subjects_page-router');
 const all_studentsRoutes = require('./routes/8.4_all_sudents_page-router');
 const searchRoutes = require('./routes/9_search-router');
+const tokenRoutes = require('./routes/check_token');
 
 
 // Middleware, parse the incoming requests with JSON payloads
@@ -23,7 +24,7 @@ app.use(express.json());
 
 // Middleware для настройки CORS
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', `http://localhost:${PORT}`); // Здесь указывается домен вашей веб-страницы
+  res.header('Access-Control-Allow-Origin', `http://localhost:${PORT}`); // Здесь указывается домен веб-страницы
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
   next();
@@ -55,6 +56,7 @@ app.use(all_groupsRoutes);
 app.use(all_subjectsRoutes);
 app.use(all_studentsRoutes);
 app.use(searchRoutes);
+app.use(tokenRoutes);
 
 const interval = 1000 * 60 * 60; // 1 hour
 
