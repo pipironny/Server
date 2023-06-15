@@ -12,6 +12,10 @@ router.get('/api/group_page/:id', requireAuth, (req, res)=>{
     const id = req.params.id;
 
     const body = {
+        
+        title: {
+            
+        },
         schedule: {
             
         },
@@ -25,6 +29,19 @@ router.get('/api/group_page/:id', requireAuth, (req, res)=>{
             
         }
     };
+
+    // Заголовок (название группы по id);
+    connection.query('SELECT groups.name AS group_name FROM groups WHERE groups.id = ?;',id ,
+    (err, result) =>{
+        if (err){
+            console.error("Ошибка подключения " + err.message);
+            res.status(500).send('Internal Server Error');
+            return;
+        }
+        else{
+            body.title = result;
+        }
+    });
 
     // Последние пары (id, дата, дисциплина, пара, аудитория);
     connection.query('SELECT `schedule`.id, `schedule`.date, subjects.name AS subject_name, `schedule`.number, classrooms.number AS classroom FROM `schedule` JOIN subjects ON `schedule`.subject_id = subjects.id JOIN classrooms ON `schedule`.classroom_id = classrooms.id WHERE group_id=? ORDER BY `schedule`.date DESC, `schedule`.number DESC',id ,
@@ -76,6 +93,7 @@ router.get('/api/group_page/:id', requireAuth, (req, res)=>{
          else{
              body.subjects = result;
              if (
+                body.title &&
                 body.schedule &&
                 body.attendance &&
                 body.students &&

@@ -11,6 +11,10 @@ router.get('/api/subject_page/:id', requireAuth,(req, res)=>{
     const id = req.params.id;// id дисциплины
     
     const body = {
+    
+        title: {
+            
+        },
         attendance: {
             
         },
@@ -24,6 +28,19 @@ router.get('/api/subject_page/:id', requireAuth,(req, res)=>{
 
         },
     };
+
+     //  Название дисциплины
+     connection.query('SELECT name AS subject_name FROM subjects WHERE subjects.id=?', id,
+     (err, result) =>{
+         if (err){
+             console.error("Ошибка подключения " + err.message);
+             res.status(500).json({ message: 'Ошибка сервера' });
+             return;
+         }
+         else{
+             body.title = result;
+         }
+     });
 
     // общая посещаемость
     connection.query('SELECT (SUM(CASE WHEN attendance.visit IN (1, 2) THEN 1 ELSE 0 END) / COUNT(*) * 100) AS attendance_percentage FROM `attendance` JOIN `schedule` ON attendance.schedule_id = `schedule`.id WHERE `schedule`.`subject_id` = ?', id,
@@ -76,6 +93,7 @@ router.get('/api/subject_page/:id', requireAuth,(req, res)=>{
         else{
             body.employees = result;
             if (
+                body.title &&
                 body.attendance &&
                 body.subjects &&
                 body.groups &&
