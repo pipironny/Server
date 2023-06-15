@@ -12,7 +12,7 @@ connection = require('../db/mysql-connection').connection;
 router.get('/api/search/:term', requireAuth,(req, res)=>{
     const search_term = req.params.term;
 
-    connection.query(`SELECT subjects.id, subjects.name FROM subjects WHERE name LIKE '${search_term}%' UNION SELECT groups.id, groups.name FROM groups WHERE name LIKE '${search_term}%' LIMIT 5`,
+    connection.query(`SELECT subjects.id AS subject_id, subjects.name AS subject_name, NULL AS group_id, NULL AS group_name FROM subjects WHERE subjects.name LIKE '${search_term}%' UNION SELECT NULL AS subject_id, NULL AS subject_name, groups.id AS group_id, groups.name AS group_name FROM groups WHERE groups.name LIKE '${search_term}%' LIMIT 5`,
     (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
