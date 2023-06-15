@@ -21,6 +21,14 @@ const searchRoutes = require('./routes/9_search-router');
 // Middleware, parse the incoming requests with JSON payloads
 app.use(express.json());
 
+// Middleware для настройки CORS
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', `http://localhost:${PORT}`); // Здесь указывается домен вашей веб-страницы
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
+
 // Global Error Handler
 app.use(function(err, req, res, next) {
     console.error(err.stack);
