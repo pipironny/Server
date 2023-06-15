@@ -27,7 +27,7 @@ router.get('/api/group_page/:id', requireAuth, (req, res)=>{
     };
 
     // Последние пары (id, дата, дисциплина, пара, аудитория);
-    connection.query('SELECT id, date, subject_id, number, classroom_id FROM `schedule` WHERE group_id=?',id ,
+    connection.query('SELECT `schedule`.id, `schedule`.date, subjects.name AS subject_name, `schedule`.number, classrooms.number AS classroom FROM `schedule` JOIN subjects ON `schedule`.subject_id = subjects.id JOIN classrooms ON `schedule`.classroom_id = classrooms.id WHERE group_id=? ORDER BY `schedule`.date DESC, `schedule`.number DESC',id ,
     (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
