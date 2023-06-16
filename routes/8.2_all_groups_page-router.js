@@ -19,7 +19,7 @@ router.get('/api/all_groups/', requireAuth,(req, res)=>{
     (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
-            res.status(500).json({ message: 'Ошибка сервера' });
+            res.status(500).json({ message: 'Internal Server Error' });
             return;
         }
         else{

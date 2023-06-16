@@ -41,7 +41,7 @@ router.get('/api/visit_page/:id', requireAuth, (req, res)=>{
                 return;
             }
 
-            // дата пары, название дисциплины, название группы
+            // Дата пары, название дисциплины, название группы
             connection.query('SELECT `schedule`.date, subjects.id AS subject_id, subjects.name AS subject_name, groups.name AS group_name FROM `schedule` JOIN subjects ON `schedule`.subject_id = subjects.id JOIN groups ON `schedule`.group_id = groups.id WHERE `schedule`.id = ?', id,
             (err, result) =>{
                 if (err){
@@ -78,7 +78,7 @@ router.get('/api/visit_page/:id', requireAuth, (req, res)=>{
 
 });
 
-// запрос, в котором приходят отметки посещений (1 - посещение, 2 - уважит., 3 - пропуск). Уважительные = посещение 
+// Запрос, в котором приходят отметки посещений (1 - посещение, 2 - уважит., 3 - пропуск). Уважительные = посещение 
 router.put('/api/visit_page/:schedule_id', requireAuth, (req, res)=>{
     const schedule_id = req.params.schedule_id; // id занятия (schedule)
     const attendanceData = req.body.attendance; // Массив посещаемости студентов
@@ -100,7 +100,7 @@ router.put('/api/visit_page/:schedule_id', requireAuth, (req, res)=>{
                 return;
             }
 
-        // массив значений
+        // Массив значений
         const attendance = attendanceData.map(data => [schedule_id, data.student_id, data.visit]);
         
         connection.query('INSERT INTO `attendance` (schedule_id, student_id, visit) VALUES ?' + 'ON DUPLICATE KEY UPDATE visit = VALUES(visit)', 

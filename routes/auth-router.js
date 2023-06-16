@@ -21,7 +21,7 @@ router.post('/api/register', (req, res) => {
     bcrypt.hash(password, 10, (err, hash) => {
       if (err) {
         console.error("Ошибка hash" + err.message);
-        res.status(500).send('Internal Server Error');
+        res.status(500).json({ message: 'Internal Server Error' });
         return;
       }
       // Добавление пользователя в базу данных
@@ -30,11 +30,11 @@ router.post('/api/register', (req, res) => {
         (err, results) => {
           if (err) {
             console.error("Ошибка подключения " + err.message);
-            res.status(500).send('Internal Server Error');
+            res.status(500).json({ message: 'Internal Server Error' });
             return;
           }
           // Возвращение статуса успешного выполнения
-          res.status(200).send('Регистрация успешно завершена');
+          res.status(200).json({ message: 'Registration completed successfully' });
         }
       );
     });
