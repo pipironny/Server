@@ -21,6 +21,7 @@ const student_attendanceRoutes = require('./routes/6_student_attendance_page-rou
 const subjectRoutes = require('./routes/7_subject_page-router');
 const scheduleRoutes = require('./routes/8.1_schedule_page-router');
 const all_groupsRoutes = require('./routes/8.2_all_groups_page-router');
+const all_groups_adminRoutes = require('./routes/8.2_all_groups_admin');
 const all_subjectsRoutes = require('./routes/8.3_all_subjects_page-router');
 const all_studentsRoutes = require('./routes/8.4_all_sudents_page-router');
 const searchRoutes = require('./routes/9_search-router');
@@ -51,6 +52,7 @@ app.use(student_attendanceRoutes);
 app.use(subjectRoutes);
 app.use(scheduleRoutes);
 app.use(all_groupsRoutes);
+app.use(all_groups_adminRoutes);
 app.use(all_subjectsRoutes);
 app.use(all_studentsRoutes);
 app.use(searchRoutes);
