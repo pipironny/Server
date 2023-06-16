@@ -31,7 +31,7 @@ router.get('/api/attendance_page/:group_id/:subject_id', requireAuth,(req, res)=
     (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
-            res.status(500).send('Internal Server Error');
+            res.status(500).json({ message: 'Internal Server Error' });
             return;
         }
         else{
@@ -44,7 +44,7 @@ router.get('/api/attendance_page/:group_id/:subject_id', requireAuth,(req, res)=
     (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
-            res.status(500).send('Internal Server Error');
+            res.status(500).json({ message: 'Internal Server Error' });
             return;
         }
         else{
@@ -57,7 +57,7 @@ router.get('/api/attendance_page/:group_id/:subject_id', requireAuth,(req, res)=
     (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
-            res.status(500).send('Internal Server Error');
+            res.status(500).json({ message: 'Internal Server Error' });
             return;
         }
         else{

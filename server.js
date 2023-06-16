@@ -3,15 +3,15 @@ const express = require("express");
 const PORT = process.env.PORT ?? 3000;
 const app = express();
 
-// Middleware для настройки CORS
+// Middleware (Промежуточное ПО) для настройки стандарта CORS
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', `*`); // Здесь указывается домен веб-страницы
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');// Допустимые запросы
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');// Допустимые заголовки
   next();
 });
 
-// Routers path
+// Путь маршрутов
 const authRoutes = require('./routes/auth-router');
 const groupRoutes = require('./routes/2_group_page-router');
 const attendanceRoutes = require('./routes/3_attendance_page-router');
@@ -28,19 +28,15 @@ const all_studentsRoutes = require('./routes/8.4_all_sudents_page-router');
 const searchRoutes = require('./routes/9_search-router');
 const tokenRoutes = require('./routes/check_token');
 
-// Middleware, parse the incoming requests with JSON payloads
+// Middleware (Промежуточное ПО), анализирует входящие запросы с полезными данными JSON.
 app.use(express.json());
 
-// Global Error Handler
+// Глобальный обработчик ошибок
 app.use(function(err, req, res, next) {
     console.error(err.stack);
     console.error(err.name);
     console.error(err.code);
     res.status(500).send('Что-то пошло не так');
-});
-
-app.get('/', (req, res) =>{
-    res.send("Main page");
 });
  
 // Маршруты
@@ -60,8 +56,9 @@ app.use(all_studentsRoutes);
 app.use(searchRoutes);
 app.use(tokenRoutes);
 
-const interval = 1000 * 60 * 60; // 1 hour
 
+const interval = 1000 * 60 * 60; // 1 час
+// установка интервала для удаления сессий
 setInterval(deleteExpiredSessions, interval);
 
 // Удаление истёкших сессий
@@ -80,6 +77,7 @@ function deleteExpiredSessions() {
     );
   }
  
+// Запуск сервера на порту PORT
 app.listen(PORT, () => {
     console.log(`Server running on localhost port ${PORT}...`);
 });
