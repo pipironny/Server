@@ -16,6 +16,7 @@ router.get('/api/group_page/:id', requireAuth, (req, res)=>{
     const [authType, authToken] = authHeader.split(' ');
     const decodedToken = jwt.verify(authToken, process.env.SECRET_KEY);
     const teacher_id  = decodedToken.userId; // id преподавателя
+    const role  = decodedToken.Role; // id преподавателя
 
     const body = {
         
@@ -49,6 +50,20 @@ router.get('/api/group_page/:id', requireAuth, (req, res)=>{
         }
     });
 
+    if (role == 2){
+        // Последние пары (id, дата, дисциплина, пара, аудитория);
+        connection.query(' SELECT `schedule`.id AS schedule_id, `schedule`.date, subjects.name AS subject_name, `schedule`.number AS number, classrooms.number AS classroom FROM `schedule` JOIN subjects ON `schedule`.subject_id = subjects.id JOIN classrooms ON `schedule`.classroom_id = classrooms.id WHERE `schedule`.group_id = ? ORDER BY `schedule`.date DESC, `schedule`.number DESC',id,
+        (err, result) =>{
+            if (err){
+                console.error("Ошибка подключения " + err.message);
+                res.status(500).json({ message: 'Internal Server Error' });
+                return;
+            }
+            else{
+                body.schedule = result;
+            }
+    });
+    } else {
     // Последние пары (id, дата, дисциплина, пара, аудитория);
     connection.query(' SELECT `schedule`.id AS schedule_id, `schedule`.date, subjects.name AS subject_name, `schedule`.number AS number, classrooms.number AS classroom FROM `schedule` JOIN subjects ON `schedule`.subject_id = subjects.id JOIN classrooms ON `schedule`.classroom_id = classrooms.id WHERE `schedule`.group_id = ? AND `schedule`.employee_id = ? ORDER BY `schedule`.date DESC, `schedule`.number DESC',[id, teacher_id] ,
     (err, result) =>{
@@ -61,6 +76,7 @@ router.get('/api/group_page/:id', requireAuth, (req, res)=>{
             body.schedule = result;
         }
     });
+    }
 
     // Общая посещаемость группы по всем дисциплинам;
     connection.query('SELECT (SUM(CASE WHEN attendance.visit IN (1, 2) THEN 1 ELSE 0 END) / COUNT(*) * 100) AS overall_attendance_percentage FROM `attendance` JOIN students ON attendance.student_id = students.id WHERE group_id=?',id ,
@@ -88,27 +104,54 @@ router.get('/api/group_page/:id', requireAuth, (req, res)=>{
          }
      });
 
-     // Дисциплины, к которым привязана группа(id, Название и посещаемость этой дисциплины этой группой).
-     connection.query('SELECT subjects.id, subjects.name AS subject_name, (SUM(CASE WHEN attendance.visit IN (1, 2) THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS attendance_percentage FROM subjects JOIN `schedule` ON subjects.id = `schedule`.subject_id JOIN attendance ON `schedule`.id = attendance.schedule_id WHERE `schedule`.group_id = ? AND `schedule`.employee_id = ? GROUP BY subjects.id, subjects.name',[id, teacher_id],
-     (err, result) =>{
-         if (err){
-             console.error("Ошибка подключения " + err.message);
-             res.status(500).json({ message: 'Internal Server Error' });
-             return;
-         }
-         else{
-             body.subjects = result;
-             if (
-                body.title &&
-                body.schedule &&
-                body.attendance &&
-                body.students &&
-                body.subjects
-             ) {
-                res.json(body);
-             }
-         }
-     });
+
+    if (role == 2){
+        // Дисциплины, к которым привязана группа для администратора (id, Название и посещаемость этой дисциплины этой группой).
+        connection.query('SELECT subjects.id, subjects.name AS subject_name, (SUM(CASE WHEN attendance.visit IN (1, 2) THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS attendance_percentage FROM subjects JOIN `schedule` ON subjects.id = `schedule`.subject_id JOIN attendance ON `schedule`.id = attendance.schedule_id WHERE `schedule`.group_id = ? GROUP BY subjects.id, subjects.name',id,
+        (err, result) =>{
+            if (err){
+                console.error("Ошибка подключения " + err.message);
+                res.status(500).json({ message: 'Internal Server Error' });
+                return;
+            }
+            else{
+                body.subjects = result;
+                if (
+                    body.title &&
+                    body.schedule &&
+                    body.attendance &&
+                    body.students &&
+                    body.subjects
+                ) {
+                    res.json(body);
+                }
+            }
+          });
+    } else {
+        // Дисциплины, к которым привязана группа(id, Название и посещаемость этой дисциплины этой группой).
+        connection.query('SELECT subjects.id, subjects.name AS subject_name, (SUM(CASE WHEN attendance.visit IN (1, 2) THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS attendance_percentage FROM subjects JOIN `schedule` ON subjects.id = `schedule`.subject_id JOIN attendance ON `schedule`.id = attendance.schedule_id WHERE `schedule`.group_id = ? AND `schedule`.employee_id = ? GROUP BY subjects.id, subjects.name',[id, teacher_id],
+        (err, result) =>{
+            if (err){
+                console.error("Ошибка подключения " + err.message);
+                res.status(500).json({ message: 'Internal Server Error' });
+                return;
+            }
+            else{
+                body.subjects = result;
+                if (
+                    body.title &&
+                    body.schedule &&
+                    body.attendance &&
+                    body.students &&
+                    body.subjects
+                ) {
+                    res.json(body);
+                }
+            }
+        });
+    }
+
+    
 
 
      
