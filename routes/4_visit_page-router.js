@@ -17,6 +17,7 @@ router.get('/api/visit_page/:id', requireAuth, (req, res)=>{
     const [authType, authToken] = authHeader.split(' ');
     const decodedToken = jwt.verify(authToken, process.env.SECRET_KEY);
     const teacher_id  = decodedToken.userId; // id преподавателя
+    const role  = decodedToken.Role; // id преподавателя
 
     const body = {
         
@@ -27,6 +28,76 @@ router.get('/api/visit_page/:id', requireAuth, (req, res)=>{
             
         }
     };
+
+    // Дата пары, название дисциплины, название группы
+    connection.query('SELECT `schedule`.date, subjects.id AS subject_id, subjects.name AS subject_name, groups.name AS group_name FROM `schedule` JOIN subjects ON `schedule`.subject_id = subjects.id JOIN groups ON `schedule`.group_id = groups.id WHERE `schedule`.id = ?', id,
+    (err, result) =>{
+        if (err){
+            console.error("Ошибка подключения " + err.message);
+            res.status(500).json({ message: 'Internal Server Error' });
+            return;
+        } else {
+            body.title = result;
+        }
+    });
+
+    // Проверка на админа
+    if (role == 2){
+        // id, ФИО и посещаемость(visit) всех студентов группы по этой дисциплине в отдельности
+        connection.query('SELECT students.id AS student_id, CONCAT(students.last_name, " ", students.first_name, " ", students.patronymic) AS full_name, attendance.visit FROM `schedule` JOIN attendance ON `schedule`.`id`= attendance.schedule_id JOIN subjects ON `schedule`.`subject_id` = subjects.id JOIN students ON attendance.student_id = students.id WHERE `schedule`.`id` = ?', id,
+        (err, result) =>{
+            if (err){
+                console.error("Ошибка подключения " + err.message);
+                res.status(500).json({ message: 'Internal Server Error' });
+                return;
+            }
+            else{
+                body.visit = result;
+                if (
+                    body.title &&
+                    body.visit
+                ) {
+                    res.json(body);
+                }
+            }
+        });
+    } else {       
+        // Проверка принадлежности занятия преподавателю
+        connection.query('SELECT employee_id FROM schedule WHERE id = ? AND employee_id = ?', [id, teacher_id],
+        (err, result) => {
+            if (err) {
+                console.error("Ошибка подключения " + err.message);
+                res.status(500).json({ message: 'Internal Server Error' });
+                return;
+            } else {
+                if (result.length === 0) {
+                    res.status(403).json({ message: 'Access Denied' });
+                    return;
+                }
+
+                // id, ФИО и посещаемость(visit) всех студентов группы по этой дисциплине в отдельности
+                connection.query('SELECT students.id AS student_id, CONCAT(students.last_name, " ", students.first_name, " ", students.patronymic) AS full_name, attendance.visit FROM `schedule` JOIN attendance ON `schedule`.`id`= attendance.schedule_id JOIN subjects ON `schedule`.`subject_id` = subjects.id JOIN students ON attendance.student_id = students.id WHERE `schedule`.`id` = ?', id,
+                (err, result) =>{
+                    if (err){
+                        console.error("Ошибка подключения " + err.message);
+                        res.status(500).json({ message: 'Internal Server Error' });
+                        return;
+                    }
+                    else{
+                        body.visit = result;
+                        if (
+                            body.title &&
+                            body.visit
+                        ) {
+                            res.json(body);
+                        }
+                    }
+                });
+
+            }
+        });
+    }
+
 
     // Проверка принадлежности занятия преподавателю
     connection.query('SELECT employee_id FROM schedule WHERE id = ? AND employee_id = ?', [id, teacher_id],
