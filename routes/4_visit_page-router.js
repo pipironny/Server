@@ -22,7 +22,7 @@ router.get('/api/visit_page/:id', requireAuth, (req, res)=>{
     };
 
     // дата пары, название дисциплины, название группы
-    connection.query('SELECT schedule.date, subjects.name AS subject_name, groups.name AS group_name FROM `schedule` JOIN subjects ON `schedule`.subject_id = subjects.id JOIN groups ON `schedule`.group_id = groups.id WHERE `schedule`.id = ?', id,
+    connection.query('SELECT `schedule`.date, subjects.id AS subject_id, subjects.name AS subject_name, groups.name AS group_name FROM `schedule` JOIN subjects ON `schedule`.subject_id = subjects.id JOIN groups ON `schedule`.group_id = groups.id WHERE `schedule`.id = ?', id,
     (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
