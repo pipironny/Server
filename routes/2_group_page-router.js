@@ -2,6 +2,8 @@ const express = require('express');
 
 const router = express.Router();
 
+const jwt = require('jsonwebtoken');
+
 // Промежуточное ПО (Middleware)
 const requireAuth = require('../middleware/user_auth-middleware');
 
@@ -10,6 +12,10 @@ connection = require('../db/mysql-connection').connection;
 // 2 Страница группы, по id группы:
 router.get('/api/group_page/:id', requireAuth, (req, res)=>{
     const id = req.params.id;
+    const authHeader = req.headers.authorization;
+    const [authType, authToken] = authHeader.split(' ');
+    const decodedToken = jwt.verify(authToken, process.env.SECRET_KEY);
+    const teacher_id  = decodedToken.userId; // id преподавателя
 
     const body = {
         
@@ -35,7 +41,7 @@ router.get('/api/group_page/:id', requireAuth, (req, res)=>{
     (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
-            res.status(500).send('Internal Server Error');
+            res.status(500).json({ message: 'Internal Server Error' });
             return;
         }
         else{
@@ -44,11 +50,11 @@ router.get('/api/group_page/:id', requireAuth, (req, res)=>{
     });
 
     // Последние пары (id, дата, дисциплина, пара, аудитория);
-    connection.query('SELECT `schedule`.id, `schedule`.date, subjects.name AS subject_name, `schedule`.number, classrooms.number AS classroom FROM `schedule` JOIN subjects ON `schedule`.subject_id = subjects.id JOIN classrooms ON `schedule`.classroom_id = classrooms.id WHERE group_id=? ORDER BY `schedule`.date DESC, `schedule`.number DESC',id ,
+    connection.query(' SELECT `schedule`.id AS schedule_id, `schedule`.date, subjects.name AS subject_name, `schedule`.number AS number, classrooms.number AS classroom FROM `schedule` JOIN subjects ON `schedule`.subject_id = subjects.id JOIN classrooms ON `schedule`.classroom_id = classrooms.id WHERE `schedule`.group_id = ? AND `schedule`.employee_id = ? ORDER BY `schedule`.date DESC, `schedule`.number DESC',[id, teacher_id] ,
     (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
-            res.status(500).send('Internal Server Error');
+            res.status(500).json({ message: 'Internal Server Error' });
             return;
         }
         else{
@@ -61,7 +67,7 @@ router.get('/api/group_page/:id', requireAuth, (req, res)=>{
     (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
-            res.status(500).send('Internal Server Error');
+            res.status(500).json({ message: 'Internal Server Error' });
             return;
         }
         else{
@@ -74,7 +80,7 @@ router.get('/api/group_page/:id', requireAuth, (req, res)=>{
      (err, result) =>{
          if (err){
              console.error("Ошибка подключения " + err.message);
-             res.status(500).send('Internal Server Error');
+             res.status(500).json({ message: 'Internal Server Error' });
              return;
          }
          else{
@@ -83,11 +89,11 @@ router.get('/api/group_page/:id', requireAuth, (req, res)=>{
      });
 
      // Дисциплины, к которым привязана группа(id, Название и посещаемость этой дисциплины этой группой).
-     connection.query('SELECT  `schedule`.`subject_id` AS subject_id, subjects.name AS subjects_name, (SUM(CASE WHEN attendance.visit IN (1, 2) THEN 1 ELSE 0 END) / COUNT(*) * 100) AS attendance_percentage FROM `schedule` JOIN attendance ON `schedule`.id = attendance.schedule_id JOIN subjects ON `schedule`.subject_id = subjects.id WHERE `schedule`.group_id = ? GROUP BY schedule.subject_id, subjects.name;',id ,
+     connection.query('SELECT subjects.id, subjects.name AS subject_name, (SUM(CASE WHEN attendance.visit IN (1, 2) THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS attendance_percentage FROM subjects JOIN `schedule` ON subjects.id = `schedule`.subject_id JOIN attendance ON `schedule`.id = attendance.schedule_id WHERE `schedule`.group_id = ? AND `schedule`.employee_id = ? GROUP BY subjects.id, subjects.name',[id, teacher_id],
      (err, result) =>{
          if (err){
              console.error("Ошибка подключения " + err.message);
-             res.status(500).send('Internal Server Error');
+             res.status(500).json({ message: 'Internal Server Error' });
              return;
          }
          else{
