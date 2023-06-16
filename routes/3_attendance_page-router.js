@@ -27,7 +27,7 @@ router.get('/api/attendance_page/:group_id/:subject_id', requireAuth,(req, res)=
     };
 
     // название дисциплины и группы
-    connection.query('SELECT subjects.name AS subject_name, groups.name AS group_name FROM subjects JOIN groups ON subjects.id = ? AND groups.id = ?',[subject_id, group_id],
+    connection.query('SELECT subjects.name AS subject_name, groups.name AS group_name, (SUM(CASE WHEN attendance.visit IN (1, 2) THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS attendance_percentage FROM subjects JOIN `schedule` ON subjects.id = `schedule`.subject_id JOIN groups ON `schedule`.group_id = groups.id JOIN attendance ON `schedule`.id = attendance.schedule_id WHERE `schedule`.group_id = ? AND schedule.subject_id = ? GROUP BY subjects.name, groups.name',[group_id, subject_id],
     (err, result) =>{
         if (err){
             console.error("Ошибка подключения " + err.message);
