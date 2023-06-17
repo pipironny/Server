@@ -80,7 +80,7 @@ router.get('/api/student_page/:id', requireAuth, (req, res)=>{
         });
     } else {
          // все дисциплины, к которым привязана группа студента но только для этого преподавателя
-         connection.query('SELECT DISTINCT subjects.id AS subject_id, subjects.name AS subject_name FROM subjects JOIN `schedule` ON subjects.id = `schedule`.subject_id JOIN groups ON `schedule`.group_id = groups.id JOIN students ON groups.id = students.group_id WHERE students.id = ? AND `schedule`.employee_id = ?', [id, teacher_id],
+         connection.query('SELECT subjects.id AS subject_id, subjects.name AS subject_name, (COUNT(CASE WHEN attendance.visit IN (1, 2) THEN 1 END) / COUNT(attendance.id)) * 100 AS attendance_percentage FROM `attendance` JOIN `schedule` ON attendance.schedule_id = `schedule`.id JOIN subjects ON `schedule`.subject_id = subjects.id WHERE attendance.student_id = ? AND `schedule`.employee_id = ? GROUP BY subjects.id, subjects.name;', [id, teacher_id],
          (err, result) =>{
              if (err){
                  console.error("Ошибка подключения " + err.message);
